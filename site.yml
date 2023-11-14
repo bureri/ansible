@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install updates (Ubuntu)
+    tags: apache
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+  
+
+  - name: install apache package and php package for ubuntu
+    tags: ubuntu
+    apt: 
+      upgrade: dist
+      update_cache: yes        
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: copy html site
+    tags: ubuntu
+    copy: 
+      src: site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644 
